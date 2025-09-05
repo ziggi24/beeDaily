@@ -1,0 +1,125 @@
+{
+  "morning": {
+    "title": "Morning Routine",
+    "icon": "fa-sun",
+    "color": "#FFA726",
+    "tasks": [
+      {
+        "id": "brush-teeth-morning",
+        "text": "Brush teeth",
+        "icon": "fa-tooth",
+        "category": "hygiene"
+      },
+      {
+        "id": "take-medication-morning",
+        "text": "Take medication",
+        "icon": "fa-pills",
+        "category": "health"
+      },
+      {
+        "id": "brush-hair",
+        "text": "Brush hair",
+        "icon": "fa-brush",
+        "category": "hygiene"
+      },
+      {
+        "id": "drink-water-morning",
+        "text": "Drink 1L of water",
+        "icon": "fa-glass-water",
+        "category": "hydration"
+      },
+      {
+        "id": "drink-coffee",
+        "text": "Drink coffee",
+        "icon": "fa-mug-hot",
+        "category": "routine"
+      },
+      {
+        "id": "check-weather",
+        "text": "Check weather and plan outfit",
+        "icon": "fa-cloud-sun",
+        "category": "planning"
+      }
+    ]
+  },
+  "midday": {
+    "title": "Midday Activities",
+    "icon": "fa-sun-bright",
+    "color": "#66BB6A",
+    "tasks": [
+      {
+        "id": "exercise",
+        "text": "Get some exercise",
+        "icon": "fa-dumbbell",
+        "category": "fitness"
+      },
+      {
+        "id": "drink-water-midday",
+        "text": "Drink 1L of water",
+        "icon": "fa-glass-water",
+        "category": "hydration"
+      },
+      {
+        "id": "shower",
+        "text": "Take a shower",
+        "icon": "fa-shower",
+        "category": "hygiene"
+      },
+      {
+        "id": "healthy-lunch",
+        "text": "Eat a healthy lunch",
+        "icon": "fa-bowl-food",
+        "category": "nutrition"
+      },
+      {
+        "id": "mindful-break",
+        "text": "Take a mindful break",
+        "icon": "fa-leaf",
+        "category": "wellness"
+      }
+    ]
+  },
+  "evening": {
+    "title": "Evening Wind Down",
+    "icon": "fa-moon",
+    "color": "#7986CB",
+    "tasks": [
+      {
+        "id": "brush-teeth-evening",
+        "text": "Brush teeth",
+        "icon": "fa-tooth",
+        "category": "hygiene"
+      },
+      {
+        "id": "take-medication-evening",
+        "text": "Take medication",
+        "icon": "fa-pills",
+        "category": "health"
+      },
+      {
+        "id": "drink-water-evening",
+        "text": "Drink 1L of water",
+        "icon": "fa-glass-water",
+        "category": "hydration"
+      },
+      {
+        "id": "prepare-tomorrow",
+        "text": "Prepare for tomorrow",
+        "icon": "fa-calendar-check",
+        "category": "planning"
+      },
+      {
+        "id": "relax-time",
+        "text": "Relaxation time",
+        "icon": "fa-couch",
+        "category": "wellness"
+      },
+      {
+        "id": "bedtime-routine",
+        "text": "Follow bedtime routine",
+        "icon": "fa-bed",
+        "category": "sleep"
+      }
+    ]
+  }
+}
