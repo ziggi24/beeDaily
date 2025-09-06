@@ -165,10 +165,302 @@ class DailyTracker {
     }
 
     celebrateTaskCompletion(taskElement) {
+        // Get current progress percentage
+        const totalTasks = Object.values(this.schedule)
+            .reduce((total, section) => total + section.tasks.length, 0);
+        const completedCount = this.completedTasks.size;
+        const percentage = totalTasks > 0 ? (completedCount / totalTasks) * 100 : 0;
+
+        // Basic bounce animation
         taskElement.style.transform = 'scale(1.05)';
         setTimeout(() => {
             taskElement.style.transform = '';
         }, 200);
+
+        // Progressive celebration based on completion percentage
+        if (percentage >= 80) {
+            this.createMegaCelebration(taskElement);
+        } else if (percentage >= 50) {
+            this.createBigCelebration(taskElement);
+        } else {
+            this.createBasicCelebration(taskElement);
+        }
+
+        // Special milestone celebrations
+        if (percentage === 50) {
+            this.showMilestoneMessage("Halfway there! 🎉", "great");
+        } else if (percentage === 80) {
+            this.showMilestoneMessage("Almost done! You're crushing it! 🚀", "amazing");
+        } else if (percentage === 100) {
+            this.showMilestoneMessage("Perfect day completed! 🏆✨", "perfect");
+        }
+    }
+
+    createBasicCelebration(taskElement) {
+        this.createConfetti(taskElement, {
+            count: 3,
+            emojis: ['✨', '⭐'],
+            size: 'small',
+            spread: 50
+        });
+    }
+
+    createBigCelebration(taskElement) {
+        this.createConfetti(taskElement, {
+            count: 6,
+            emojis: ['🎉', '✨', '⭐', '💫'],
+            size: 'medium',
+            spread: 80
+        });
+        
+        // Add extra sparkle effect
+        this.createSparkleRing(taskElement);
+    }
+
+    createMegaCelebration(taskElement) {
+        this.createConfetti(taskElement, {
+            count: 12,
+            emojis: ['🎉', '🎊', '✨', '⭐', '💫', '🌟', '🎈'],
+            size: 'large',
+            spread: 120
+        });
+        
+        // Multiple sparkle rings
+        this.createSparkleRing(taskElement);
+        setTimeout(() => this.createSparkleRing(taskElement), 150);
+        
+        // Screen flash effect
+        this.createScreenFlash();
+    }
+
+    createConfetti(sourceElement, options) {
+        const rect = sourceElement.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < options.count; i++) {
+            setTimeout(() => {
+                const emoji = options.emojis[Math.floor(Math.random() * options.emojis.length)];
+                this.createFloatingEmoji(emoji, centerX, centerY, options);
+            }, i * 50);
+        }
+    }
+
+    createFloatingEmoji(emoji, startX, startY, options) {
+        const emojiElement = document.createElement('div');
+        emojiElement.textContent = emoji;
+        emojiElement.className = 'floating-emoji';
+        
+        // Size based on options
+        const sizes = {
+            small: '20px',
+            medium: '28px',
+            large: '36px'
+        };
+        
+        emojiElement.style.cssText = `
+            position: fixed;
+            left: ${startX}px;
+            top: ${startY}px;
+            font-size: ${sizes[options.size]};
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+        `;
+
+        document.body.appendChild(emojiElement);
+
+        // Random animation direction
+        const angle = (Math.random() * options.spread - options.spread/2) * Math.PI / 180;
+        const distance = 100 + Math.random() * 100;
+        const endX = startX + Math.cos(angle) * distance;
+        const endY = startY + Math.sin(angle) * distance - 50; // Always go up a bit
+
+        // Animate the emoji
+        emojiElement.animate([
+            { 
+                transform: 'translate(-50%, -50%) scale(0) rotate(0deg)',
+                opacity: 1
+            },
+            { 
+                transform: 'translate(-50%, -50%) scale(1) rotate(180deg)',
+                opacity: 1,
+                offset: 0.3
+            },
+            { 
+                transform: `translate(${endX - startX}px, ${endY - startY}px) scale(0.5) rotate(360deg)`,
+                opacity: 0
+            }
+        ], {
+            duration: 1500,
+            easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)'
+        });
+
+        // Clean up
+        setTimeout(() => {
+            if (emojiElement.parentNode) {
+                emojiElement.parentNode.removeChild(emojiElement);
+            }
+        }, 1500);
+    }
+
+    createSparkleRing(sourceElement) {
+        const rect = sourceElement.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        const sparkles = ['✨', '💫', '⭐'];
+        const ringRadius = 60;
+
+        for (let i = 0; i < 8; i++) {
+            const angle = (i / 8) * 2 * Math.PI;
+            const x = centerX + Math.cos(angle) * ringRadius;
+            const y = centerY + Math.sin(angle) * ringRadius;
+            
+            const sparkle = document.createElement('div');
+            sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+            sparkle.className = 'sparkle-ring';
+            sparkle.style.cssText = `
+                position: fixed;
+                left: ${x}px;
+                top: ${y}px;
+                font-size: 16px;
+                pointer-events: none;
+                z-index: 9998;
+                transform: translate(-50%, -50%);
+            `;
+
+            document.body.appendChild(sparkle);
+
+            sparkle.animate([
+                { 
+                    transform: 'translate(-50%, -50%) scale(0) rotate(0deg)',
+                    opacity: 0
+                },
+                { 
+                    transform: 'translate(-50%, -50%) scale(1) rotate(180deg)',
+                    opacity: 1,
+                    offset: 0.5
+                },
+                { 
+                    transform: 'translate(-50%, -50%) scale(0) rotate(360deg)',
+                    opacity: 0
+                }
+            ], {
+                duration: 800,
+                easing: 'ease-out'
+            });
+
+            setTimeout(() => {
+                if (sparkle.parentNode) {
+                    sparkle.parentNode.removeChild(sparkle);
+                }
+            }, 800);
+        }
+    }
+
+    createScreenFlash() {
+        const flash = document.createElement('div');
+        flash.className = 'screen-flash';
+        flash.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: radial-gradient(circle, rgba(255,215,0,0.3) 0%, rgba(255,215,0,0) 70%);
+            pointer-events: none;
+            z-index: 9997;
+        `;
+
+        document.body.appendChild(flash);
+
+        flash.animate([
+            { opacity: 0 },
+            { opacity: 1 },
+            { opacity: 0 }
+        ], {
+            duration: 500,
+            easing: 'ease-out'
+        });
+
+        setTimeout(() => {
+            if (flash.parentNode) {
+                flash.parentNode.removeChild(flash);
+            }
+        }, 500);
+    }
+
+    showMilestoneMessage(message, type) {
+        const milestone = document.createElement('div');
+        milestone.className = `milestone-message milestone-${type}`;
+        milestone.textContent = message;
+        
+        const colors = {
+            great: '#4CAF50',
+            amazing: '#FF9800', 
+            perfect: '#9C27B0'
+        };
+
+        milestone.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: ${colors[type]};
+            color: white;
+            padding: 20px 30px;
+            border-radius: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            z-index: 10000;
+            pointer-events: none;
+        `;
+
+        document.body.appendChild(milestone);
+
+        milestone.animate([
+            { 
+                transform: 'translate(-50%, -50%) scale(0)',
+                opacity: 0
+            },
+            { 
+                transform: 'translate(-50%, -50%) scale(1.1)',
+                opacity: 1,
+                offset: 0.7
+            },
+            { 
+                transform: 'translate(-50%, -50%) scale(1)',
+                opacity: 1
+            }
+        ], {
+            duration: 500,
+            easing: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)'
+        });
+
+        setTimeout(() => {
+            milestone.animate([
+                { 
+                    transform: 'translate(-50%, -50%) scale(1)',
+                    opacity: 1
+                },
+                { 
+                    transform: 'translate(-50%, -50%) scale(0)',
+                    opacity: 0
+                }
+            ], {
+                duration: 300,
+                easing: 'ease-in'
+            });
+        }, 2000);
+
+        setTimeout(() => {
+            if (milestone.parentNode) {
+                milestone.parentNode.removeChild(milestone);
+            }
+        }, 2300);
     }
 
     updateProgress() {
